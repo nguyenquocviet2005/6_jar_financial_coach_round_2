@@ -1,0 +1,493 @@
+AI Coacher:
+graph TD
+    %% External Entities
+    CLIENT([Mobile Client<br/>External Entity])
+    SCHEDULER([System Scheduler<br/>External Entity])
+    
+    %% Level 2 Processes
+    P1[["1.0<br/>Request Processing<br/>(API Gateway)"]]
+    P2[["2.0<br/>Context Aggregation<br/>(Data Retrieval)"]]
+    P3[["3.0<br/>AI Coach Orchestration<br/>(RAG Processing)"]]
+    P4[["4.0<br/>Advice Generation<br/>(LLM Processing)"]]
+    P5[["5.0<br/>Notification Management<br/>(Alert Distribution)"]]
+    P6[["6.0<br/>Proactive Monitoring<br/>(Alert Trigger)"]]
+    
+    %% Data Stores
+    DS1[(D1: Real-time Context<br/>Data Store)]
+    DS2[(D2: Historical & Analytics<br/>Data Store)]
+    DS3[(D3: Vector Knowledge Base<br/>Data Store)]
+    DS4[(D4: ML Model Store<br/>Data Store)]
+    DS5[(D5: Notification Queue<br/>Data Store)]
+    
+    %% External Services (treated as external entities for L2 DFD)
+    SAGEMAKER([SageMaker Endpoint<br/>External Service])
+    PINPOINT([Pinpoint Service<br/>External Entity])
+    
+    %% Data Flows
+    
+    %% User-initiated flows
+    CLIENT -.->|"coaching request"| P1
+    P1 -->|"validated request"| P3
+    P1 -.->|"response"| CLIENT
+    
+    %% Proactive flows
+    SCHEDULER -.->|"trigger signal"| P6
+    P6 -->|"proactive request"| P3
+    
+    %% Context aggregation
+    P3 -->|"data request"| P2
+    P2 -->|"real-time query"| DS1
+    P2 -->|"historical query"| DS2
+    P2 -->|"semantic search"| DS3
+    P2 -->|"model request"| DS4
+    DS1 -->|"current context"| P2
+    DS2 -->|"historical patterns"| P2
+    DS3 -->|"relevant knowledge"| P2
+    DS4 -->|"model parameters"| P2
+    P2 -->|"aggregated context"| P3
+    
+    %% ML forecasting
+    P3 -->|"forecast request"| SAGEMAKER
+    SAGEMAKER -.->|"predictions"| P3
+    
+    %% Advice generation
+    P3 -->|"synthesized prompt"| P4
+    P4 -->|"personalized advice"| P3
+    
+    %% Notification processing
+    P3 -->|"advice content"| P5
+    P5 -->|"notification data"| DS5
+    DS5 -->|"queued notifications"| P5
+    P5 -->|"formatted message"| PINPOINT
+    PINPOINT -.->|"push notification"| CLIENT
+    
+    %% Data updates (bidirectional flows)
+    P3 -->|"interaction log"| DS1
+    P3 -->|"analytics data"| DS2
+    P4 -->|"knowledge update"| DS3
+    
+    %% Styling for Level 2 DFD
+    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef datastore fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class P1,P2,P3,P4,P5,P6 process
+    class DS1,DS2,DS3,DS4,DS5 datastore
+    class CLIENT,SCHEDULER,SAGEMAKER,PINPOINT external
+    
+=====================================================================
+Finetuning:
+graph TD
+    %% External Entities
+    CLIENT([Mobile Client<br/>External Entity])
+    SCHEDULER([System Scheduler<br/>External Entity])
+    BEDROCK([AWS Bedrock Service<br/>External Entity])
+    PROD_SYSTEM([Production Classification System<br/>External Entity])
+    
+    %% Level 2 Processes
+    P1[["1.0<br/>Feedback Ingestion<br/>(API Gateway)"]]
+    P2[["2.0<br/>Feedback Processing<br/>(Queue Management)"]]
+    P3[["3.0<br/>Manual Classification<br/>(Data Labeling)"]]
+    P4[["4.0<br/>Stream Processing<br/>(Real-time Analytics)"]]
+    P5[["5.0<br/>Fine-tuning Orchestration<br/>(Training Workflow)"]]
+    P6[["6.0<br/>Training Data Preparation<br/>(Data Formatting)"]]
+    P7[["7.0<br/>Model Training<br/>(Fine-tuning Execution)"]]
+    P8[["8.0<br/>Model Deployment<br/>(Version Management)"]]
+    P9[["9.0<br/>Error Handling<br/>(Failure Recovery)"]]
+    
+    %% Data Stores
+    DS1[(D1: Message Queue<br/>Data Store)]
+    DS2[(D2: Error Queue<br/>Data Store)]
+    DS3[(D3: Real-time Feedback<br/>Data Store)]
+    DS4[(D4: Analytics Repository<br/>Data Store)]
+    DS5[(D5: Training Artifacts<br/>Data Store)]
+    DS6[(D6: Model Registry<br/>Data Store)]
+    
+    %% Data Flows
+    
+    %% Feedback Collection Flow
+    CLIENT -.->|"user feedback"| P1
+    P1 -->|"validated feedback"| DS1
+    P1 -.->|"acknowledgment"| CLIENT
+    
+    %% Queue Processing Flow
+    DS1 -->|"queued feedback"| P2
+    P2 -->|"processed message"| P3
+    P2 -->|"failed message"| DS2
+    P2 -->|"processing status"| DS1
+    
+    %% Classification Flow
+    P3 -->|"classified feedback"| DS3
+    P3 -->|"classification log"| DS4
+    
+    %% Stream Processing Flow
+    DS3 -->|"data stream"| P4
+    P4 -->|"aggregated analytics"| DS4
+    P4 -->|"processed metrics"| DS3
+    
+    %% Fine-tuning Trigger Flow
+    SCHEDULER -.->|"training trigger"| P5
+    P5 -->|"data request"| P6
+    
+    %% Training Data Preparation Flow
+    DS4 -->|"historical data"| P6
+    DS3 -->|"recent feedback"| P6
+    P6 -->|"formatted training data"| DS5
+    P6 -->|"data quality report"| P5
+    
+    %% Model Training Flow
+    P5 -->|"training request"| P7
+    DS5 -->|"training dataset"| P7
+    P7 -->|"training job spec"| BEDROCK
+    BEDROCK -.->|"training status"| P7
+    BEDROCK -.->|"trained model"| P7
+    P7 -->|"model artifacts"| DS5
+    P7 -->|"training metrics"| DS6
+    P7 -->|"completion status"| P5
+    
+    %% Model Deployment Flow
+    P5 -->|"deployment request"| P8
+    DS5 -->|"model artifacts"| P8
+    DS6 -->|"model metadata"| P8
+    P8 -->|"new model version"| PROD_SYSTEM
+    P8 -->|"deployment log"| DS6
+    P8 -.->|"deployment status"| P5
+    
+    %% Error Handling Flow
+    DS2 -->|"failed messages"| P9
+    P9 -->|"retry message"| DS1
+    P9 -->|"error report"| DS4
+    P9 -->|"resolved status"| DS2
+    
+    %% Monitoring and Feedback Loops
+    P7 -->|"training logs"| DS4
+    P8 -->|"deployment metrics"| DS4
+    P5 -->|"workflow status"| DS4
+    
+    %% Styling for Level 2 DFD
+    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef datastore fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class P1,P2,P3,P4,P5,P6,P7,P8,P9 process
+    class DS1,DS2,DS3,DS4,DS5,DS6 datastore
+    class CLIENT,SCHEDULER,BEDROCK,PROD_SYSTEM external
+    
+=====================================================================
+Transaction Classification:
+graph TD
+    %% External Entities
+    USER([User<br/>External Entity])
+    NOTIFICATION_SERVICE([Notification Service<br/>External Entity])
+    DOCUMENT_UPLOAD([Document Upload System<br/>External Entity])
+    
+    %% Level 2 Processes
+    P1[["1.0<br/>Request Reception<br/>(Queue Management)"]]
+    P2[["2.0<br/>Classification Orchestration<br/>(Workflow Control)"]]
+    P3[["3.0<br/>Document Processing<br/>(Data Extraction)"]]
+    P4[["4.0<br/>Automated Classification<br/>(ML Processing)"]]
+    P5[["5.0<br/>Manual Classification<br/>(Human Review)"]]
+    P6[["6.0<br/>Notification Management<br/>(Alert Processing)"]]
+    P7[["7.0<br/>Data Archival<br/>(Analytics Pipeline)"]]
+    P8[["8.0<br/>Error Recovery<br/>(Failure Handling)"]]
+    
+    %% Data Stores
+    DS1[(D1: Request Queue<br/>Data Store)]
+    DS2[(D2: Error Queue<br/>Data Store)]
+    DS3[(D3: Document Repository<br/>Data Store)]
+    DS4[(D4: Real-time Results<br/>Data Store)]
+    DS5[(D5: Analytics Archive<br/>Data Store)]
+    DS6[(D6: Classification Workflow<br/>Data Store)]
+    
+    %% Data Flows
+    
+    %% Request Ingestion Flow
+    USER -.->|"classification request"| P1
+    P1 -->|"queued request"| DS1
+    P1 -.->|"request acknowledgment"| USER
+    
+    %% Queue Processing Flow
+    DS1 -->|"pending request"| P2
+    DS1 -->|"failed request"| DS2
+    P2 -->|"workflow status"| DS6
+    
+    %% Document Processing Flow
+    DOCUMENT_UPLOAD -.->|"document upload"| P3
+    DS3 -->|"stored document"| P3
+    P3 -->|"extracted data"| DS1
+    P3 -->|"processing metadata"| DS3
+    P3 -->|"extraction results"| P2
+    
+    %% Automated Classification Flow
+    P2 -->|"classification directive"| P4
+    DS4 -->|"previous classifications"| P4
+    P4 -->|"ML classification results"| DS4
+    P4 -->|"confidence score"| P2
+    P4 -->|"automated result"| DS6
+    
+    %% Manual Classification Flow
+    P2 -->|"manual review request"| P5
+    DS6 -->|"workflow context"| P5
+    P5 -->|"manual classification"| DS4
+    P5 -->|"review completion"| P2
+    P5 -->|"manual result"| DS6
+    
+    %% Notification Flow
+    P2 -->|"low confidence alert"| P6
+    DS6 -->|"notification context"| P6
+    P6 -->|"notification request"| NOTIFICATION_SERVICE
+    NOTIFICATION_SERVICE -.->|"push notification"| USER
+    P6 -->|"notification log"| DS4
+    
+    %% Analytics Flow
+    DS4 -->|"classification data"| P7
+    DS6 -->|"workflow metrics"| P7
+    P7 -->|"analytical data"| DS5
+    P7 -->|"archive status"| DS4
+    
+    %% Error Handling Flow
+    DS2 -->|"failed message"| P8
+    P8 -->|"retry request"| DS1
+    P8 -->|"error resolution"| DS2
+    P8 -->|"error metrics"| DS5
+    
+    %% Monitoring and Feedback
+    P4 -->|"ML performance metrics"| DS5
+    P5 -->|"manual review metrics"| DS5
+    P6 -->|"notification statistics"| DS5
+    P2 -->|"orchestration logs"| DS5
+    
+    %% Quality Control Flows
+    P2 -->|"quality check request"| DS4
+    DS4 -->|"classification history"| P2
+    P2 -->|"workflow decision"| DS6
+    
+    %% Styling for Level 2 DFD
+    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef datastore fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class P1,P2,P3,P4,P5,P6,P7,P8 process
+    class DS1,DS2,DS3,DS4,DS5,DS6 datastore
+    class USER,NOTIFICATION_SERVICE,DOCUMENT_UPLOAD external
+    
+=====================================================================
+Spending Prediction:
+graph TD
+    %% External Entities
+    USER([User<br/>External Entity])
+    DAILY_SCHEDULER([Daily Scheduler<br/>External Entity])
+    MONTHLY_SCHEDULER([Monthly Scheduler<br/>External Entity])
+    NOTIFICATION_SERVICE([Notification Service<br/>External Entity])
+    ML_SERVICE([ML Model Service<br/>External Entity])
+    
+    %% Level 2 Processes
+    P1[["1.0<br/>Daily Forecast Trigger<br/>(Schedule Processing)"]]
+    P2[["2.0<br/>Forecast Generation<br/>(Prediction Processing)"]]
+    P3[["3.0<br/>Alert Management<br/>(Notification Processing)"]]
+    P4[["4.0<br/>Model Training Pipeline<br/>(ML Training)"]]
+    P5[["5.0<br/>Monthly Income Processing<br/>(Salary Analysis)"]]
+    P6[["6.0<br/>Income Allocation Analysis<br/>(Budget Processing)"]]
+    P7[["7.0<br/>Data Preparation<br/>(Training Data Processing)"]]
+    P8[["8.0<br/>Model Deployment<br/>(Model Management)"]]
+    
+    %% Data Stores
+    DS1[(D1: User Financial Data<br/>Data Store)]
+    DS2[(D2: Historical Analytics<br/>Data Store)]
+    DS3[(D3: Prediction Results<br/>Data Store)]
+    DS4[(D4: Alert Queue<br/>Data Store)]
+    DS5[(D5: Model Registry<br/>Data Store)]
+    DS6[(D6: Training Dataset<br/>Data Store)]
+    DS7[(D7: Income Analysis<br/>Data Store)]
+    
+    %% Data Flows
+    
+    %% Daily Forecast Flow
+    DAILY_SCHEDULER -.->|"daily trigger"| P1
+    P1 -->|"forecast request"| P2
+    
+    %% Forecast Generation Flow
+    P2 -->|"model request"| ML_SERVICE
+    ML_SERVICE -.->|"predictions"| P2
+    DS1 -->|"user data"| P2
+    DS2 -->|"historical patterns"| P2
+    P2 -->|"forecast results"| DS3
+    P2 -->|"prediction data"| DS2
+    
+    %% Alert Processing Flow
+    P2 -->|"alert trigger"| P3
+    DS3 -->|"forecast data"| P3
+    P3 -->|"alert message"| DS4
+    DS4 -->|"queued alerts"| P3
+    P3 -->|"notification request"| NOTIFICATION_SERVICE
+    NOTIFICATION_SERVICE -.->|"push notification"| USER
+    
+    %% Monthly Income Flow
+    MONTHLY_SCHEDULER -.->|"monthly trigger"| P5
+    P5 -->|"income analysis request"| P6
+    DS1 -->|"salary data"| P6
+    DS7 -->|"previous allocations"| P6
+    P6 -->|"allocation results"| DS7
+    P6 -->|"income status"| DS1
+    
+    %% Income Alert Flow
+    P6 -->|"income alert"| P3
+    DS7 -->|"budget analysis"| P3
+    
+    %% Model Training Flow
+    DS2 -->|"training data request"| P7
+    P7 -->|"prepared dataset"| DS6
+    P7 -->|"data quality metrics"| DS2
+    DS6 -->|"training dataset"| P4
+    P4 -->|"training request"| ML_SERVICE
+    ML_SERVICE -.->|"trained model"| P4
+    P4 -->|"model artifacts"| DS5
+    P4 -->|"training metrics"| DS2
+    
+    %% Model Deployment Flow
+    P4 -->|"deployment request"| P8
+    DS5 -->|"model artifacts"| P8
+    P8 -->|"updated model"| ML_SERVICE
+    P8 -->|"deployment status"| DS5
+    
+    %% Data Update Flows
+    P2 -->|"forecast logs"| DS2
+    P3 -->|"alert statistics"| DS2
+    P6 -->|"income metrics"| DS2
+    P4 -->|"model performance"| DS2
+    
+    %% Quality Control Flows
+    P2 -->|"prediction accuracy"| P4
+    DS3 -->|"forecast validation"| P7
+    P6 -->|"allocation patterns"| P7
+    
+    %% User Data Updates
+    P6 -->|"updated allocations"| DS1
+    P2 -->|"forecast history"| DS1
+    P3 -->|"notification preferences"| DS1
+    
+    %% Styling for Level 2 DFD
+    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef datastore fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class P1,P2,P3,P4,P5,P6,P7,P8 process
+    class DS1,DS2,DS3,DS4,DS5,DS6,DS7 datastore
+    class USER,DAILY_SCHEDULER,MONTHLY_SCHEDULER,NOTIFICATION_SERVICE,ML_SERVICE external
+    
+=====================================================================
+Overall:
+graph TD
+    %% External Entities
+    CLIENT([Mobile Client<br/>External Entity])
+    SCHEDULED_TRIGGER([System Scheduler<br/>External Entity])
+    INCOME_SOURCE([Income Source<br/>External Entity])
+    NOTIFICATION_SERVICE([Notification Service<br/>External Entity])
+    
+    %% Level 2 Processes
+    P1[["1.0<br/>Transaction Processing<br/>(Classification & Recording)"]]
+    P2[["2.0<br/>Balance Management<br/>(Jar Balance Updates)"]]
+    P3[["3.0<br/>Financial Coaching<br/>(AI Advisory Service)"]]
+    P4[["4.0<br/>Spending Prediction<br/>(Forecast & Alerts)"]]
+    P5[["5.0<br/>Income Processing<br/>(Income Detection)"]]
+    P6[["6.0<br/>Income Allocation<br/>(Jar Distribution)"]]
+    P7[["7.0<br/>Context Analysis<br/>(Data Aggregation)"]]
+    P8[["8.0<br/>Alert Management<br/>(Notification Processing)"]]
+    
+    %% Data Stores
+    DS1[(D1: Transaction History<br/>Data Store)]
+    DS2[(D2: Account Balances<br/>Data Store)]
+    DS3[(D3: Jar Allocations<br/>Data Store)]
+    DS4[(D4: User Profile<br/>Data Store)]
+    DS5[(D5: Prediction Models<br/>Data Store)]
+    DS6[(D6: Coaching Context<br/>Data Store)]
+    DS7[(D7: Alert Queue<br/>Data Store)]
+    DS8[(D8: Income Records<br/>Data Store)]
+    
+    %% Data Flows
+    
+    %% Transaction Processing Flow
+    CLIENT -.->|"transaction data"| P1
+    P1 -->|"classified transaction"| DS1
+    P1 -->|"balance update request"| P2
+    P1 -.->|"transaction confirmation"| CLIENT
+    
+    %% Balance Management Flow
+    P2 -->|"current balance query"| DS2
+    DS2 -->|"current balance data"| P2
+    DS3 -->|"jar allocation rules"| P2
+    P2 -->|"updated balances"| DS2
+    P2 -->|"jar balance changes"| DS3
+    P2 -->|"balance update log"| DS1
+    
+    %% Financial Coaching Flow
+    CLIENT -.->|"advice request"| P3
+    P3 -->|"context request"| P7
+    P7 -->|"user profile data"| DS4
+    P7 -->|"transaction history"| DS1
+    P7 -->|"balance information"| DS2
+    P7 -->|"jar status"| DS3
+    P7 -->|"aggregated context"| DS6
+    DS6 -->|"relevant context"| P3
+    P3 -.->|"financial advice"| CLIENT
+    P3 -->|"coaching session log"| DS6
+    
+    %% Spending Prediction Flow
+    SCHEDULED_TRIGGER -.->|"prediction trigger"| P4
+    DS1 -->|"spending patterns"| P4
+    DS2 -->|"current balances"| P4
+    DS5 -->|"prediction models"| P4
+    P4 -->|"spending forecast"| DS5
+    P4 -->|"alert generation"| P8
+    P4 -->|"coaching trigger"| P3
+    
+    %% Income Processing Flow
+    INCOME_SOURCE -.->|"income notification"| P5
+    P5 -->|"income verification"| DS8
+    P5 -->|"allocation trigger"| P6
+    DS8 -->|"income history"| P5
+    
+    %% Income Allocation Flow
+    P6 -->|"balance query"| DS2
+    DS2 -->|"current balance"| P6
+    DS3 -->|"allocation rules"| P6
+    DS4 -->|"user preferences"| P6
+    P6 -->|"allocated amounts"| DS3
+    P6 -->|"updated balances"| DS2
+    P6 -->|"allocation record"| DS8
+    P6 -->|"allocation summary"| P7
+    
+    %% Alert Management Flow
+    P8 -->|"alert message"| DS7
+    DS7 -->|"queued alerts"| P8
+    P8 -->|"notification request"| NOTIFICATION_SERVICE
+    NOTIFICATION_SERVICE -.->|"push notification"| CLIENT
+    P8 -->|"alert log"| DS6
+    
+    %% Cross-Process Data Flows
+    P1 -->|"transaction analysis"| P7
+    P2 -->|"balance analysis"| P7
+    P6 -->|"allocation analysis"| P7
+    P4 -->|"prediction results"| DS6
+    P5 -->|"income patterns"| DS6
+    
+    %% Monitoring and Analytics
+    P1 -->|"transaction metrics"| DS6
+    P2 -->|"balance trends"| DS6
+    P3 -->|"coaching effectiveness"| DS6
+    P4 -->|"prediction accuracy"| DS6
+    P6 -->|"allocation performance"| DS6
+    
+    %% User Preference Updates
+    P3 -->|"preference updates"| DS4
+    P6 -->|"allocation preferences"| DS4
+    P8 -->|"notification preferences"| DS4
+    
+    %% Styling for Level 2 DFD
+    classDef process fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    classDef datastore fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    classDef external fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    
+    class P1,P2,P3,P4,P5,P6,P7,P8 process
+    class DS1,DS2,DS3,DS4,DS5,DS6,DS7,DS8 datastore
+    class CLIENT,SCHEDULED_TRIGGER,INCOME_SOURCE,NOTIFICATION_SERVICE external

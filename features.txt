@@ -1,0 +1,46 @@
+
+**1. Onboarding & Setup (All P0)**
+* Input income and the date it's received.
+* Automatically allocate funds into different "jars" or budget categories.
+* Input the user's overall financial situation.
+* Input the user's spending preferences and habits.
+
+**2. 6 Jars Budget Management (Core Feature - All P0)**
+* Automatically divide income into jars by percentage.
+* Full CRUD (Create, Read, Update, Delete) functionality for the jars.
+* Send overspending alerts when a user exceeds a self-set limit or the amount in a jar.
+* Display the percentage of the budget spent and the remaining amount.
+* Visually represent the status of each jar using colors or tags.
+* Set a daily spending percentage limit based on the initial total amount in the jars.
+
+**3. AI Coach & Insight (P0)**
+* A chat/voicebot for user interaction.
+* The AI provides spending advice.
+    * It can suggest investments and insurance products related to the Financial Freedom Account (FFA) jar.
+    * It helps balance spending, especially when a transaction is large or a jar is nearly empty.
+* Users can record spending and transaction information using the chat/voice interface.
+
+**4. Transaction Tracking**
+* Tagging for transfer transactions (P0).
+* Create, Read, and Update (CRU) functionality for transactions (P0).
+* Capture bills via photo to automatically extract spending information (P1).
+* Search function for transactions (P1).
+* Handle income received outside of the primary salary, including triggering notifications, updating the database, and auto-tagging the income (P1).
+* Send reminders for fixed, recurring service payments (P2).
+
+**5. Goals & Planning**
+* Set user financial goals (P0).
+* Track progress towards goals (P0).
+* Create savings goals with incrementally increasing difficulty (P1).
+* Develop daily spending plans (P1).
+* Adjust financial plans based on spending reports (P1).
+* Enable group savings goals (P2).
+
+**6. Gamification & Learning (All P1)**
+* Award badges for completing financial tasks and achievements.
+* Include a leaderboard to foster friendly competition on savings progress and task completion.
+
+**7. Reporting & Analysis (All P0)**
+* Analyze monthly spending habits.
+* Provide monthly/quarterly overview reports on the status of all budget jars.
+* Calculate and display a "financial health" score.
